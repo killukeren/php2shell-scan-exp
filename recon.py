@@ -24,6 +24,7 @@ import ssl
 import sys
 import urllib.parse
 from dataclasses import dataclass, field
+from lib import ui
 
 
 PATCHED_VERSIONS = {
@@ -53,24 +54,30 @@ class TargetInfo:
     raw_headers: dict = field(default_factory=dict)
 
     def summary(self) -> str:
-        lines = []
-        lines.append(f"Target       : {self.url}")
-        lines.append(f"Reachable    : {'yes' if self.reachable else 'NO'}")
+        k = ui.kv
+        lines = [k("Target", self.url)]
+        reach = ui.ok("yes") if self.reachable else ui.bad("NO")
+        lines.append(f"{ui.info('Reachable'.ljust(13))}{ui.dim(':')} {reach}")
         if not self.reachable:
             return "\n".join(lines)
-        lines.append(f"PHP Version  : {self.php_version or 'hidden'}")
-        lines.append(f"OS Hint      : {self.os_hint or 'unknown'}")
-        lines.append(f"Server       : {self.server or 'hidden'}")
-        lines.append(f"SAPI         : {self.sapi or 'unknown'}")
-        lines.append(f"MPM          : {self.mpm or 'unknown'}")
-        lines.append(f"UploadProg   : {self.upload_progress or 'unknown'}")
-        lines.append(f"Vulnerable   : {'YES' if self.vulnerable else 'no'}")
-        if self.vulns:
-            for v in self.vulns:
-                lines.append(f"  [!] {v}")
-        if self.notes:
-            for n in self.notes:
-                lines.append(f"  [i] {n}")
+
+        lines.append(k("PHP Version", self.php_version or ui.warn("hidden")))
+        lines.append(k("OS Hint", self.os_hint or "unknown"))
+        lines.append(k("Server", self.server or ui.warn("hidden")))
+        lines.append(k("SAPI", self.sapi or "unknown"))
+        lines.append(k("MPM", self.mpm or "unknown"))
+
+        up = self.upload_progress or "unknown"
+        if up.startswith("inactive"):
+            up = ui.warn(up)
+        lines.append(k("UploadProg", up))
+
+        vul = ui.bad("YES") if self.vulnerable else ui.ok("no")
+        lines.append(f"{ui.info('Vulnerable'.ljust(13))}{ui.dim(':')} {vul}")
+        for v in self.vulns:
+            lines.append(ui.caveat(v))
+        for n in self.notes:
+            lines.append(ui.note(n))
         return "\n".join(lines)
 
 
