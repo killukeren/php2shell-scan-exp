@@ -1,4 +1,5 @@
 # php2shell-scan-exp
+<img width="1081" height="912" alt="image" src="https://github.com/user-attachments/assets/d00548f0-8bd8-4257-8afa-e34f97fcadec" />
 
 Fork of the php2shell exploit (CVE-2026-109618 / CVE-2026-109619) with a
 working PHP 8.4.15 profile, a non-destructive target probe, per-target result
