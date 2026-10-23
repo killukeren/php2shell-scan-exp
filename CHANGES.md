@@ -270,8 +270,6 @@ Existing profiles: 8.4.25 (trixie amd64), 8.3.35 (bookworm amd64), 8.4.26
 | `show_results.sh` | print saved per-target results |
 | `apache-prefork.conf` | forces a single worker |
 | `www/index.php` | minimal session-enabled entry point |
-| `www/dangle.php` | `session_write_close()` before the OOM |
-| `www/redir.php`, `www/landing.php` | 302 entry point for redirect testing |
 
 ---
 

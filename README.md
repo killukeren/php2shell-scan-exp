@@ -51,10 +51,7 @@ php2shell-scan-exp/
 │   ├── show_results.sh        print saved per-target results
 │   ├── apache-prefork.conf    forces single worker (chain requirement)
 │   └── www/
-│       ├── index.php          minimal session-enabled entry point
-│       ├── dangle.php         session_write_close() before the OOM
-│       ├── redir.php          302 entry point (redirect testing)
-│       └── landing.php        redirect target
+│       └── index.php          minimal session-enabled entry point
 │
 ├── docs/
 │   ├── TARGET-REQUIREMENTS.md what the chain needs and why

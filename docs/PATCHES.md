@@ -181,11 +181,15 @@ again.
 
 ## Test harness
 
-`lab/www/redir.php` returns `302 -> /landing.php`; `lab/www/landing.php` calls
-`session_start()`. Both labs mount the same `www/` directory, so the redirect
-test works on either port.
+The redirect test used two throwaway pages (`redir.php` returning
+`302 -> landing.php`, and `landing.php` calling `session_start()`). They were
+removed after the investigation: the transport layer is verified, and the chain
+still cannot survive a mid-chain hop, so keeping a redirect fixture in the lab
+only invites confusion.
+
+The redirect finding is reproducible against any real target whose entry point
+302s — no lab fixture needed:
 
 ```bash
-bash lab/lab_php_versi8415.sh up
-curl -sI http://127.0.0.1:8088/redir.php | head -3
+curl -sI https://TARGET/ | grep -i location
 ```
