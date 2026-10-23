@@ -1,0 +1,8 @@
+out/
+__pycache__/
+*.pyc
+*.so
+*.env
+.env
+.DS_Store
+lib/__pycache__/
