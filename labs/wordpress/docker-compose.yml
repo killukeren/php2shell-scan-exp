@@ -1,0 +1,41 @@
+services:
+  db:
+    image: mariadb:11
+    container_name: p2s-wp-db
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wpuser
+      MARIADB_PASSWORD: wppass123
+      MARIADB_ROOT_PASSWORD: rootpass123
+    volumes:
+      - wpdb:/var/lib/mysql
+      # Seeded on first start only (empty data dir). Makes the stack come up
+      # with WordPress already installed, no install wizard.
+      - ./sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  wordpress:
+    build: .
+    container_name: p2s-wp
+    ports:
+      - "127.0.0.1:18120:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppass123
+      WP_SITE_URL: http://127.0.0.1:18120
+    volumes:
+      - ./out:/out
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  wpdb:

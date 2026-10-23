@@ -6,3 +6,6 @@ __pycache__/
 .env
 .DS_Store
 lib/__pycache__/
+
+# WordPress lab: runtime output and the DB volume dump
+labs/wordpress/out/
